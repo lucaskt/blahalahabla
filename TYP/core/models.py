@@ -40,9 +40,6 @@ class Medicine(models.Model):
         return self.name
 
 class BaseTreatment(models.Model):
-    patient = models.ForeignKey('Patient')
-    doctor = models.ForeignKey('Doctor')
-    medicine = models.ForeignKey('Medicine')
     start_date = models.DateField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -52,6 +49,10 @@ class BaseTreatment(models.Model):
         abstract = True
 
 class RecurrentTreatment(BaseTreatment):
+    patient = models.ForeignKey('Patient', related_name='recurrent_treatments')
+    doctor = models.ForeignKey('Doctor', related_name='recurrent_treatments')
+    medicine = models.ForeignKey('Medicine', related_name='recurrent_treatments')
+
     time_interval = models.IntegerField(default=0)
     start_time = models.TimeField(null=True, blank=True)
 
@@ -59,13 +60,16 @@ class RecurrentTreatment(BaseTreatment):
         return 'RecurrentTreatment {} - {}'.format(self.patient.first_name, self.medicine.name)
 
 class OneOffTreatment(BaseTreatment):
+    patient = models.ForeignKey('Patient', related_name='oneoff_treatments')
+    doctor = models.ForeignKey('Doctor', related_name='oneoff_treatments')
+    medicine = models.ForeignKey('Medicine', related_name='oneoff_treatments')
 
     def __unicode__(self):
         return 'OneOffTreatment {} - {}'.format(self.patient.first_name, self.medicine.name)
 
 class PillTaken(models.Model):
-    patient = models.ForeignKey('Patient')
-    medicine = models.ForeignKey('Medicine')
+    patient = models.ForeignKey('Patient', related_name='pills_taken')
+    medicine = models.ForeignKey('Medicine', related_name='pills_taken')
     taken_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
