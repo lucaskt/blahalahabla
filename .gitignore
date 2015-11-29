@@ -1,0 +1,7 @@
+.idea
+.DS_Store
+
+*.pyc
+
+TYP/static
+contrib/bower_components

@@ -1,0 +1,23 @@
+{
+  "name": "TakeYourPills",
+  "description": "Eldorado Hackathon - 2016",
+  "main": "",
+  "moduleType": [],
+  "authors": [
+    "Henrique Nogueira <henrique.nogueira@eldorado.org.br>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "Materialize": "materialize#~0.97.3"
+  }
+}

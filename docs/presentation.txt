@@ -1,0 +1,24 @@
+Por que?
+1/ Resolver o problema do engajamento do paciente ao tratamento
+2/ Resolver o problema de monitoramento
+
+O que?
+1/ Um app para controlar os medicamentos tomados
+2/ Praticidade
+3/ Gamefication
+4/ Controle do médico
+
+Como?
+1/ RFID
+2/ App Android/iOS
+
+Demo
+1/ Paciente vai ao médico e recebe tratamento a ser seguido
+2/ Médico insere tratamento no sistema
+3/ Paciente vai à farmácia e compra medicamento com tags RFID
+4/ Sempre antes de tomar o remédio, o paciente escaneia a caixa do remédio
+5/ Scoreboard
+6/ Médico pode saber se o paciente tomou os remédios de acordo com o prescrito
+
+Eixos de melhorias
+1/ 
