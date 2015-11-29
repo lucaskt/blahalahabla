@@ -53,7 +53,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'TYP.wsgi.application'
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -62,7 +61,6 @@ DATABASES = {
         'PASSWORD': 'typ123',
     }
 }
-
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
