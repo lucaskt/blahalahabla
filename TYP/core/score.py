@@ -19,7 +19,7 @@ class Score:
 
     def translate(self, treatment, taken):
         ntaken = []
-        ntaken.append(treatment.start_time)
+        ntaken.append(treatment.created_at)
         ntaken = ntaken + [ t.taken_at for t in taken ]
         return self.derive_score(treatment.time_interval, ntaken)
 
@@ -48,12 +48,12 @@ class Score:
     def interval_score(self, target, taken):
         diff = abs(target - taken)
 
-        if (diff <= half):
+        if (diff <= self.half):
             return self.PRECISE_BONUS
-        elif (diff <= hour):
+        elif (diff <= self.hour):
             return self.ALMOST_BONUS
-        elif (diff <= 2 * hour):
+        elif (diff <= 2 * self.hour):
             return self.SLIGHT_PENALTY
         else:
-            return self.HEAVY_PENALTY + floor((diff - 2 * hour).total_seconds() / hour.total_seconds()) * self.RECURRING_PENALTY
+            return self.HEAVY_PENALTY + floor((diff - 2 * self.hour).total_seconds() / self.hour.total_seconds()) * self.RECURRING_PENALTY
 

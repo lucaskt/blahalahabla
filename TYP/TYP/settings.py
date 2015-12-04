@@ -37,13 +37,12 @@ INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'csp.middleware.CSPMiddleware',
 )
 
 ############################################################
@@ -103,9 +102,3 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
-
-CSP_DEFAULT_SRC = ("'none'",)
-CSP_STYLE_SRC = ("'self'", 'fonts.googleapis.com')
-CSP_SCRIPT_SRC = ("'self'",)
-CSP_FONT_SRC = ("'self'", 'fonts.gstatic.com')
-CSP_IMG_SRC = ("'self'",)

@@ -1,19 +1,18 @@
+from math import ceil
+from json import loads
+
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from csp.decorators import csp_exempt
-from django.views.decorators.csrf import csrf_exempt
-
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework import authentication, permissions
+from rest_framework import permissions
 
 from .models import *
 from .forms import PatientForm, TreatmentForm
 
-import Score
-from math import ceil
+from score import Score
 
 def index(request):
     return render(request, 'core/base.html')
@@ -49,28 +48,32 @@ def add_treatment(request, patient_pk):
             return HttpResponseRedirect(reverse('patient', kwargs={'patient_pk': p.pk}))
     return render(request, 'core/add_treatment.html', {'form': form, 'patient': p, 'doctors': d, 'medicines': m})
 
-def scoreboard(request, patient_pk):
-    p = Patient.objects.get(pk = patient_pk)
-    return render(request, 'core/scoreboard.html')
+def scoreboard(request):
+    score = generate_scores()
+    return render(request, 'core/scoreboard.html', {'scores': score})
 
 def generate_scores():
     scoreList = []
     for p in Patient.objects.all():
         total = 0
         count = 0
-        for m in Medicine.objects.get(patient = p):
-            r = RecurringTreatment.get(patient = p, medicine = m)
-            pt = PillTaken.objects.get(patient = p, medicine = m)
-            s = Score
-            total = total + s.translate(r.time_interval, pt)
+        for m in Medicine.objects.filter(treatments__patient=p).distinct():
+            r = RecurringTreatment.objects.get(patient = p, medicine = m)
+            pt = PillTaken.objects.filter(patient = p, medicine = m)
+            s = Score()
+            total = total + s.translate(r, pt)
             count = count + 1
-        total = ceil(total / count)
+        total = ceil(total / count)if count > 0 else 0
         scoreList.append({p: total})
     return scoreList
 
-@csp_exempt
-@csrf_exempt
 @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))
 def pill_taken(request):
-    return Response(status=200, data='{\'deu\': \'certo\'}', content_type='application/json')
+
+    pill = PillTaken()
+    pill.medicine = Medicine.objects.get(tag=request.POST['medicinekey'])
+    pill.patient = Patient.objects.get(device_key=request.POST['devicekey'])
+    pill.save()
+
+    return Response(status=200)

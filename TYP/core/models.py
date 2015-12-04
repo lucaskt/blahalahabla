@@ -62,4 +62,4 @@ class PillTaken(models.Model):
     taken_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return 'Pill taken by {} at {}'.format(self.treatment.patient.first_name, self.taken_at)
+        return 'Pill taken by {} at {}'.format(self.patient.first_name, self.taken_at)
