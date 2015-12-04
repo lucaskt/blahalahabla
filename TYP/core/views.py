@@ -4,14 +4,13 @@ from json import loads, dumps
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.utils.translation import trans_real
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import permissions
 
-from .models import *
 from .forms import PatientForm, TreatmentForm
 from .serializers import *
+from .models import Patient, Doctor, Medicine, PillTaken, RecurringTreatment
 
 from score import Score
 
@@ -50,8 +49,11 @@ def add_treatment(request, patient_pk):
     return render(request, 'core/add_treatment.html', {'form': form, 'patient': p, 'doctors': d, 'medicines': m})
 
 def scoreboard(request):
-    score = generate_scores()
-    return render(request, 'core/scoreboard.html', {'scores': score})
+    doctor = Doctor.objects.first()
+    ps = Patient.objects.filter(treatments__doctor=doctor).distinct()
+    for p in ps:
+        p.score = get_score_for_patient(p)
+    return render(request, 'core/scoreboard.html', {'patients': ps, 'doctor': doctor})
 
 def generate_scores():
     scoreList = []
@@ -74,6 +76,8 @@ def get_score_for_patient(p):
 @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))
 def pill_taken(request):
+
+    print request.POST
 
     pill = PillTaken()
     pill.medicine = Medicine.objects.get(tag=request.POST['medicinekey'])
@@ -105,10 +109,22 @@ def get_info_for_patient(request, device_key):
         r['time_interval'] = t.time_interval
         treatments.append(r)
 
+    pills = []
+    for pill in p.pills_taken.all():
+        r = {}
+
+        r['medicine'] = {}
+        r['medicine']['name'] = pill.medicine.name
+        r['medicine']['dosage'] = pill.medicine.dosage
+
+        r['taken_at'] = pill.taken_at.strftime('%d/%b/%Y &agrave;s %H:%M:%S')
+        pills.append(r)
+
     result = {
         'patient': PatientSerializer(p, context={'request': request}).data,
         'score': get_score_for_patient(p),
-        'treatments': dumps(treatments)
+        'treatments': dumps(treatments),
+        'pills_taken': dumps(pills)
     }
 
     return Response(status=200, data=dumps(result))

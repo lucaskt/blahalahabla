@@ -8,5 +8,31 @@
 {% block content %}
     <h4>Scoreboard</h4>
 
-    {{ scores }}
+    {% if patients %}
+        <ul class="collapsible" data-collapsible="accordion">
+            {% for p in patients %}
+                <li>
+                    <div class="collapsible-header">
+                        <i class="material-icons">filter_drama</i>{{ p.first_name }} {{ p.last_name }} -
+                        <strong>{{ p.score }}</strong>
+                    </div>
+
+                    <div class="collapsible-body">
+                        <p>
+                            {% for pill in p.pills_taken.all %}
+                                <strong>{{ pill.medicine.name }} ({{ pill.medicine.dosage }})</strong>
+                                às {{ pill.taken_at }}
+                                {% if not forloop.last %}
+                                    <br />
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Não existem pacientes para este médico.</p>
+    {% endif %}
+
 {% endblock %}

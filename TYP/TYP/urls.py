@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
-    url(r'^$', 'core.views.index', name='index'),
+    url(r'^$', 'core.views.patients', name='index'),
 
     url(r'^patient/pilltaken$', 'core.views.pill_taken', name='pill_taken'),
     url(r'^patient/(?P<device_key>\S+)', 'core.views.get_info_for_patient', name='patient_info'),
