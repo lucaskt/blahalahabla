@@ -15,13 +15,9 @@ class MedicineViewSet(viewsets.ModelViewSet):
     queryset = Medicine.objects.all()
     serializer_class = MedicineSerializer
 
-class RecurrentTreatmentViewSet(viewsets.ModelViewSet):
-    queryset = RecurrentTreatment.objects.all()
-    serializer_class = RecurrentTreatmentSerializer
-
-class OneOffTreatmentViewSet(viewsets.ModelViewSet):
-    queryset = OneOffTreatment.objects.all()
-    serializer_class = OneOffTreatmentSerializer
+class RecurringTreatmentViewSet(viewsets.ModelViewSet):
+    queryset = RecurringTreatment.objects.all()
+    serializer_class = RecurringTreatmentSerializer
 
 class PillTakenViewSet(viewsets.ModelViewSet):
     queryset = PillTaken.objects.all()

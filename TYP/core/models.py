@@ -31,7 +31,7 @@ class Doctor(models.Model):
 
 class Medicine(models.Model):
     name = models.CharField(max_length=128)
-    tag = models.CharField(max_length=128)
+    tag = models.CharField(max_length=128, unique=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -39,33 +39,20 @@ class Medicine(models.Model):
     def __unicode__(self):
         return self.name
 
-class BaseTreatment(models.Model):
-    start_date = models.DateField(null=True, blank=True)
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
-
-class RecurrentTreatment(BaseTreatment):
+class RecurringTreatment(models.Model):
     patient = models.ForeignKey('Patient', related_name='recurrent_treatments')
     doctor = models.ForeignKey('Doctor', related_name='recurrent_treatments')
     medicine = models.ForeignKey('Medicine', related_name='recurrent_treatments')
+    shots = models.IntegerField(default=0)
 
     time_interval = models.IntegerField(default=0)
     start_time = models.TimeField(null=True, blank=True)
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     def __unicode__(self):
         return 'RecurrentTreatment {} - {}'.format(self.patient.first_name, self.medicine.name)
-
-class OneOffTreatment(BaseTreatment):
-    patient = models.ForeignKey('Patient', related_name='oneoff_treatments')
-    doctor = models.ForeignKey('Doctor', related_name='oneoff_treatments')
-    medicine = models.ForeignKey('Medicine', related_name='oneoff_treatments')
-
-    def __unicode__(self):
-        return 'OneOffTreatment {} - {}'.format(self.patient.first_name, self.medicine.name)
 
 class PillTaken(models.Model):
     patient = models.ForeignKey('Patient', related_name='pills_taken')

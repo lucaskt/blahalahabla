@@ -1,26 +1,38 @@
 import os
 
+############################################################
+# General configuration
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 SECRET_KEY = 'aq6)!5qfyf3styc0h0$(8)6d7*i6kiizn4fo94e4x)#lgm%cdl'
-
+ROOT_URLCONF = 'TYP.urls'
 DEBUG = True
 ALLOWED_HOSTS = []
 
-
+############################################################
 # Application definition
 
-INSTALLED_APPS = (
+DEFAULT_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+)
 
+THIRD_PARTY_APPS = (
     'rest_framework',
+)
+
+LOCAL_APPS = (
     'core',
 )
+
+INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+############################################################
+# Middleware classes
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -33,7 +45,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'TYP.urls'
+############################################################
+# Templates
 
 TEMPLATES = [
     {
@@ -53,6 +66,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'TYP.wsgi.application'
 
+############################################################
+# Database Configuration
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -62,19 +78,25 @@ DATABASES = {
     }
 }
 
+############################################################
 # Internationalization
+
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+############################################################
+# Static content configuration
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRES = (
     os.path.join(BASE_DIR, 'core', 'static')
 )
 
+############################################################
+# REST configuration
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'

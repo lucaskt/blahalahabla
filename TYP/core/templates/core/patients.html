@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block page_title %}
+    :: Pacientes
+{% endblock %}
+
+{% block content %}
+    <h4>Pacientes</h4>
+
+    <ul class="collection">
+
+        {% for patient in patients %}
+        <li class="collection-item avatar">
+            <i class="material-icons circle red">play_arrow</i>
+            <span class="title">Title</span>
+
+            <p>First Line <br>
+                Second Line
+            </p>
+            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

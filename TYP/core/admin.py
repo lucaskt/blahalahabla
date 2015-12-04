@@ -5,6 +5,5 @@ from .models import *
 admin.site.register(Patient)
 admin.site.register(Doctor)
 admin.site.register(Medicine)
-admin.site.register(RecurrentTreatment)
-admin.site.register(OneOffTreatment)
+admin.site.register(RecurringTreatment)
 admin.site.register(PillTaken)

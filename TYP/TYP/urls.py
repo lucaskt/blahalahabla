@@ -9,8 +9,7 @@ router = routers.DefaultRouter()
 router.register(r'patients', viewsets.PatientViewSet)
 router.register(r'doctor', viewsets.DoctorViewSet)
 router.register(r'medicine', viewsets.MedicineViewSet)
-router.register(r'recurrenttreatment', viewsets.RecurrentTreatmentViewSet)
-router.register(r'oneofftreatment', viewsets.OneOffTreatmentViewSet)
+router.register(r'recurrenttreatment', viewsets.RecurringTreatmentViewSet)
 router.register(r'pilltaken', viewsets.PillTakenViewSet)
 
 urlpatterns = [
@@ -20,5 +19,5 @@ urlpatterns = [
 
     url(r'^$', 'core.views.index', name='index'),
     url(r'^doctorview/patients/$', 'core.views.patients', name='patients'),
-    url(r'^doctorview/treatments/$', 'core.views.treatments', name='treatments'),
+    url(r'^doctorview/scoreboard/$', 'core.views.scoreboard', name='scoreboard'),
 ]

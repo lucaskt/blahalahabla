@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Materialize CSS Framework Demo</title>
+    <title>EzMed {% block page_title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -17,17 +17,14 @@
     <div class="nav-wrapper container">
 
         <a id="logo-container" href="#" class="brand-logo">
-            TakeYourPills
+            EZMed
         </a>
 
         <ul class="right hide-on-med-and-down">
-            <li><a href="#">Pacientes</a></li>
+            <li><a href="{% url 'patients' %}">Pacientes</a></li>
         </ul>
         <ul class="right hide-on-med-and-down">
-            <li><a href="#">Tratamentos</a></li>
-        </ul>
-        <ul class="right hide-on-med-and-down">
-            <li><a href="#">Scoreboard</a></li>
+            <li><a href="{% url 'scoreboard' %}">Scoreboard</a></li>
         </ul>
 
         <ul id="nav-mobile" class="side-nav">
