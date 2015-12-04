@@ -2,6 +2,13 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
+from csp.decorators import csp_exempt
+from django.views.decorators.csrf import csrf_exempt
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+
 from .models import *
 from .forms import PatientForm, TreatmentForm
 
@@ -41,3 +48,10 @@ def add_treatment(request, patient_pk):
 
 def scoreboard(request):
     return render(request, 'core/scoreboard.html')
+
+@csp_exempt
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes((permissions.AllowAny,))
+def pill_taken(request):
+    return Response(status=200, data='{\'deu\': \'certo\'}', content_type='application/json')
