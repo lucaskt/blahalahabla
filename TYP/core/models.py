@@ -12,8 +12,10 @@ class Patient(models.Model):
 
     @property
     def age(self):
-        today = date.today()
-        return today.year - self.birth.year - ((today.month, today.day) < (self.birth.month, self.birth.day))
+        if self.birth is not None:
+            today = date.today()
+            return today.year - self.birth.year - ((today.month, today.day) < (self.birth.month, self.birth.day))
+        return 0
 
     def __unicode__(self):
         return '[{}] {} - {}'.format(self.device_key, self.first_name, self.age)

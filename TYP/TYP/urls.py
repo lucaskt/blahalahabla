@@ -19,5 +19,7 @@ urlpatterns = [
 
     url(r'^$', 'core.views.index', name='index'),
     url(r'^doctorview/patients/$', 'core.views.patients', name='patients'),
+    url(r'^doctorview/add_patient/$', 'core.views.add_patient', name='add_patient'),
+    url(r'^doctorview/patient/(?P<patient_pk>\d+)$', 'core.views.patient', name='patient'),
     url(r'^doctorview/scoreboard/$', 'core.views.scoreboard', name='scoreboard'),
 ]

@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block page_title %}
+    :: Paciente {{ patient.first_name }}
+{% endblock %}
+
+{% block content %}
+    <h4>{{ patient.first_name }} {{ patient.last_name }}</h4>
+
+    <div class="row">
+        <form class="col s12">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input disabled placeholder="Placeholder" id="first_name" type="text" class="validate"
+                           value="{{ patient.first_name }}">
+                    <label for="first_name">Primeiro nome</label>
+                </div>
+                <div class="input-field col s6">
+                    <input disabled id="last_name" type="text" class="validate" value="{{ patient.last_name }}">
+                    <label for="last_name">Último nome</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input disabled value="{{ patient.birth|date:"l d F Y" }}" id="disabled" type="text"
+                           class="validate">
+                    <label for="disabled">Data de nascimento</label>
+                </div>
+                <div class="input-field col s6">
+                    <input disabled value="{{ patient.age }} ano{{ patient.age|pluralize }}" id="disabled" type="text"
+                           class="validate">
+                    <label for="disabled">Idade</label>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <h4>Tratamentos</h4>
+    <div class="row">
+
+        {% if patient.treatments.all %}
+            <ul class="collapsible" data-collapsible="accordion">
+                {% for treatment in patient.treatments.all %}
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">filter_drama</i>{{ treatment.medicine.name }}
+                        </div>
+                        <div class="collapsible-body">
+                            <p>
+                                <strong>Médico responsável</strong> {{ treatment.doctor.first_name }} {{ treatment.doctor.last_name }}<br />
+                                <strong>Nome do medicamento</strong> {{ treatment.medicine.name }} <br />
+                                <strong>Dosagem do medicamento</strong> {{ treatment.medicine.dosage }} <br />
+                                <strong>Posologia</strong> {{ treatment.time_interval }} h/h
+                            </p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Não há tratamentos para este paciente.</p>
+        {% endif %}
+    </div>
+{% endblock %}
