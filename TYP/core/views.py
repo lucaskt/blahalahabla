@@ -2,8 +2,8 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
-from .models import Patient
-from .forms import PatientForm
+from .models import *
+from .forms import PatientForm, TreatmentForm
 
 def index(request):
     return render(request, 'core/base.html')
@@ -25,6 +25,19 @@ def add_patient(request):
 def patient(request, patient_pk):
     p = Patient.objects.get(pk=patient_pk)
     return render(request, 'core/patient.html', {'patient': p})
+
+def add_treatment(request, patient_pk):
+    p = Patient.objects.get(pk=patient_pk)
+    d = Doctor.objects.all()
+    m = Medicine.objects.all()
+    if request.method == 'GET':
+        form = TreatmentForm()
+    elif request.method == 'POST':
+        form = TreatmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('patient', kwargs={'patient_pk': p.pk}))
+    return render(request, 'core/add_treatment.html', {'form': form, 'patient': p, 'doctors': d, 'medicines': m})
 
 def scoreboard(request):
     return render(request, 'core/scoreboard.html')

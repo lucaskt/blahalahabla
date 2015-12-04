@@ -49,7 +49,6 @@ class RecurringTreatment(models.Model):
     shots = models.IntegerField(default=0)
 
     time_interval = models.IntegerField(default=0)
-    start_time = models.TimeField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

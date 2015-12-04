@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block page_title %}
+    :: Adicionar tratamento
+{% endblock %}
+
+{% block content %}
+    <h4>Adicionar Tratamento - {{ patient.first_name }} {{ patient.last_name }}</h4>
+
+    <div class="row">
+        <form action="{% url 'add_treatment' patient.pk %}" method="post">
+            {% csrf_token %}
+
+            <input type="hidden" name="doctor" value="1"/>
+            <input type="hidden" name="patient" value="{{ patient.pk }}"/>
+
+            <div class="input-field col s12">
+                <select id="id_medicine" name="medicine">
+                    <option value="" disabled selected>Escolha o medicamento</option>
+                    {% for medicine in medicines %}
+                        <option value="{{ medicine.pk }}">{{ medicine.name }}</option>
+                    {% endfor %}
+                </select>
+                <label>Medicamento</label>
+            </div>
+
+            <div class="input-field col s12">
+                <input id="shots" type="text" name="shots" class="validate">
+                <label for="shots">Número de doses</label>
+            </div>
+
+            <div class="input-field col s12">
+                <input id="shots" type="text" name="time_interval" class="validate">
+                <label for="shots">Posologia</label>
+            </div>
+
+            <input class="waves-effect waves-light btn" type="submit" value="Enviar"/>
+
+        </form>
+    </div>
+
+    <script language="javascript">
+        $(document).ready(function () {
+            $('select').material_select();
+        });
+    </script>
+
+
+{% endblock %}

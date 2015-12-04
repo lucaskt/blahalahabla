@@ -61,4 +61,8 @@
             <p>Não há tratamentos para este paciente.</p>
         {% endif %}
     </div>
+
+    <a class="waves-effect waves-light btn" href="{% url 'add_treatment' patient.pk %}">
+        <i class="material-icons">add</i>
+    </a>
 {% endblock %}

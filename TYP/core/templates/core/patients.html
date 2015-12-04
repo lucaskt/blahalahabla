@@ -16,21 +16,19 @@
                 <span class="title">{{ patient.first_name }} {{ patient.last_name }}</span>
 
                 <p>
-                    {{ patient.treatments.all|length }} tratamento{{ patient.treatments.all|length|pluralize }} <br />
+                    {{ patient.treatments.all|length }} tratamento{{ patient.treatments.all|length|pluralize }} <br/>
                     {{ patient.age }} ano{{ patient.age|pluralize }}
                 </p>
-                <a href="{% url 'patient' patient.pk %}" class="secondary-content"><i class="material-icons">send</i></a>
+                <a href="{% url 'patient' patient.pk %}" class="secondary-content"><i
+                        class="material-icons">send</i></a>
             </li>
         {% empty %}
             <p>Não há pacientes cadastrados.</p>
         {% endfor %}
     </ul>
 
-
-    <div class="pull-right">
-    <a class="btn-floating btn-large waves-effect waves-light red" href="{% url 'add_patient' %}">
+    <a class="waves-effect waves-light btn" href="{% url 'add_patient' %}">
         <i class="material-icons">add</i>
     </a>
-    </div>
 
 {% endblock %}
