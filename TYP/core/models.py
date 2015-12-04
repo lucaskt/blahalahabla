@@ -32,6 +32,7 @@ class Doctor(models.Model):
 class Medicine(models.Model):
     name = models.CharField(max_length=128)
     tag = models.CharField(max_length=128, unique=True)
+    dosage = models.CharField(max_length=128, default="")
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -40,9 +41,9 @@ class Medicine(models.Model):
         return self.name
 
 class RecurringTreatment(models.Model):
-    patient = models.ForeignKey('Patient', related_name='recurrent_treatments')
-    doctor = models.ForeignKey('Doctor', related_name='recurrent_treatments')
-    medicine = models.ForeignKey('Medicine', related_name='recurrent_treatments')
+    patient = models.ForeignKey('Patient', related_name='treatments')
+    doctor = models.ForeignKey('Doctor', related_name='treatments')
+    medicine = models.ForeignKey('Medicine', related_name='treatments')
     shots = models.IntegerField(default=0)
 
     time_interval = models.IntegerField(default=0)

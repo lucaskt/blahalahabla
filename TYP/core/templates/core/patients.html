@@ -12,14 +12,16 @@
 
         {% for patient in patients %}
         <li class="collection-item avatar">
-            <i class="material-icons circle red">play_arrow</i>
-            <span class="title">Title</span>
+            <i class="material-icons circle light-blue">perm_identity</i>
+            <span class="title">{{ patient.first_name }} {{ patient.last_name }}</span>
 
-            <p>First Line <br>
-                Second Line
+            <p>
+                {{ patient.treatments.all|length }} tratamento{{ patient.treatments.all|length|pluralize }}
             </p>
-            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+            <a href="#!" class="secondary-content"><i class="material-icons">send</i></a>
         </li>
+        {% empty %}
+            <p>Não há pacientes cadastrados.</p>
         {% endfor %}
     </ul>
 
