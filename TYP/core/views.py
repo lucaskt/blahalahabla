@@ -12,6 +12,9 @@ from rest_framework import authentication, permissions
 from .models import *
 from .forms import PatientForm, TreatmentForm
 
+import Score
+from math import ceil
+
 def index(request):
     return render(request, 'core/base.html')
 
@@ -46,8 +49,24 @@ def add_treatment(request, patient_pk):
             return HttpResponseRedirect(reverse('patient', kwargs={'patient_pk': p.pk}))
     return render(request, 'core/add_treatment.html', {'form': form, 'patient': p, 'doctors': d, 'medicines': m})
 
-def scoreboard(request):
+def scoreboard(request, patient_pk):
+    p = Patient.objects.get(pk = patient_pk)
     return render(request, 'core/scoreboard.html')
+
+def generate_scores():
+    scoreList = []
+    for p in Patient.objects.all():
+        total = 0
+        count = 0
+        for m in Medicine.objects.get(patient = p):
+            r = RecurringTreatment.get(patient = p, medicine = m)
+            pt = PillTaken.objects.get(patient = p, medicine = m)
+            s = Score
+            total = total + s.translate(r.time_interval, pt)
+            count = count + 1
+        total = ceil(total / count)
+        scoreList.append({p: total})
+    return scoreList
 
 @csp_exempt
 @csrf_exempt
