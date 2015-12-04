@@ -1,16 +1,17 @@
 from math import ceil
-from json import loads
+from json import loads, dumps
 
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-
+from django.utils.translation import trans_real
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import permissions
 
 from .models import *
 from .forms import PatientForm, TreatmentForm
+from .serializers import *
 
 from score import Score
 
@@ -55,17 +56,20 @@ def scoreboard(request):
 def generate_scores():
     scoreList = []
     for p in Patient.objects.all():
-        total = 0
-        count = 0
-        for m in Medicine.objects.filter(treatments__patient=p).distinct():
-            r = RecurringTreatment.objects.get(patient = p, medicine = m)
-            pt = PillTaken.objects.filter(patient = p, medicine = m)
-            s = Score()
-            total = total + s.translate(r, pt)
-            count = count + 1
-        total = ceil(total / count)if count > 0 else 0
-        scoreList.append({p: total})
+        scoreList.append({p: get_score_for_patient(p)})
     return scoreList
+
+def get_score_for_patient(p):
+    total = 0
+    count = 0
+    for m in Medicine.objects.filter(treatments__patient=p).distinct():
+        r = RecurringTreatment.objects.get(patient = p, medicine = m)
+        pt = PillTaken.objects.filter(patient = p, medicine = m)
+        s = Score()
+        total = total + s.translate(r, pt)
+        count = count + 1
+    total = ceil(total / count)if count > 0 else 0
+    return total
 
 @api_view(['POST'])
 @permission_classes((permissions.AllowAny,))
@@ -77,3 +81,34 @@ def pill_taken(request):
     pill.save()
 
     return Response(status=200)
+
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def get_info_for_patient(request, device_key):
+
+    p = Patient.objects.get(device_key=device_key)
+
+    treatments = []
+    for t in p.treatments.all():
+        r = {}
+        r['doctor'] = {}
+        r['doctor']['first_name'] = t.doctor.first_name
+        r['doctor']['last_name'] = t.doctor.last_name
+
+        r['medicine'] = {}
+        r['medicine']['name'] = t.medicine.name
+        r['medicine']['tag'] = t.medicine.tag
+        r['medicine']['dosage'] = t.medicine.dosage
+
+        r['shots'] = t.shots
+
+        r['time_interval'] = t.time_interval
+        treatments.append(r)
+
+    result = {
+        'patient': PatientSerializer(p, context={'request': request}).data,
+        'score': get_score_for_patient(p),
+        'treatments': dumps(treatments)
+    }
+
+    return Response(status=200, data=dumps(result))

@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^$', 'core.views.index', name='index'),
 
     url(r'^patient/pilltaken$', 'core.views.pill_taken', name='pill_taken'),
+    url(r'^patient/(?P<device_key>\S+)', 'core.views.get_info_for_patient', name='patient_info'),
 
     url(r'^doctorview/patients/$', 'core.views.patients', name='patients'),
     url(r'^doctorview/add_patient/$', 'core.views.add_patient', name='add_patient'),

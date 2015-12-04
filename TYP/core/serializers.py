@@ -18,9 +18,10 @@ class MedicineSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('name', 'tag', 'created_at', 'updated_at')
 
 class RecurringTreatmentSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = RecurringTreatment
-        fields = ('patient', 'doctor', 'medicine', 'time_interval', 'shots', 'created_at', 'updated_at')
+        fields = ('doctor', 'medicine', 'time_interval', 'shots', 'created_at', 'updated_at')
 
 class PillTakenSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
